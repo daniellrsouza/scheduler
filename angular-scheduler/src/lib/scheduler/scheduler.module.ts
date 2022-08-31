@@ -15,7 +15,9 @@ registerLocaleData(localePt);
     CurrentRowPipe,
     TransformDatePipe
   ],
-  imports: [],
+  imports: [
+    CommonModule
+  ],
   exports: [
     SchedulerComponent,
     GenerateArrayPipe,
