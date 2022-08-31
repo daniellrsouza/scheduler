@@ -7,3 +7,4 @@ export * from './lib/scheduler/scheduler.module';
 export * from './lib/scheduler/current-row.pipe';
 export * from './lib/scheduler/generate-array.pipe';
 export * from './lib/scheduler/transform-date.pipe';
+export * from './lib/scheduler/scheduler.interfaces';
