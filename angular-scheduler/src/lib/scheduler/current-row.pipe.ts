@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { RowObject } from './scheduler.component';
+import { RowObject } from './scheduler.interfaces';
 
 @Pipe({
   name: 'currentRow'

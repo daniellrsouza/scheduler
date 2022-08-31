@@ -1,36 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
-type HourTimeline = {
-  index: number;
-  label: string;
-}
-
-type SlotItemObject = {
-  title: string;
-  subtitle: string;
-  style?: Record<string, any>;
-  visible?: boolean;
-}
-
-export type RowObject = {
-  hour: string;
-  items: SlotItemObject[];
-}
-
-export type RowsWithDaysObject = {
-  day: string;
-  description?: string;
-  rows: RowObject[];
-}
-
-export type SchedulerOutputEvent = {
-  row: number;
-  column: number;
-  rows: RowsWithDaysObject | RowsWithDaysObject[];
-  slotClicked?: SlotItemObject | RowsWithDaysObject;
-  single?: boolean;
-}
+import { HourTimeline, RowsWithDaysObject, SchedulerOutputEvent, SlotItemObject } from './scheduler.interfaces';
 
 export const isRowObject =
   (obj: any): obj is RowsWithDaysObject => !Array.isArray(obj);
