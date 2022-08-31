@@ -1,0 +1,141 @@
+<div class="wrapper">
+  <div class="actions">
+    <!--  -->
+  </div>
+
+  <ng-container *ngIf="isSingle; else multi">
+    <ng-container *ngTemplateOutlet="slotsGridSingle"></ng-container>
+  </ng-container>
+  <ng-template #multi>
+    <ng-container *ngTemplateOutlet="slotsGridMulti"></ng-container>
+  </ng-template>
+</div>
+
+<!-- One day slots -->
+<ng-template #slotsGridSingle>
+  <div class="slots-grid">
+    <div *ngFor="let hour of timeline; let rowIdx=index" class="slots-row">
+      <div class="hour-label">
+        {{ hour.label }}
+      </div>
+
+      <div
+      class="slots-list"
+      *ngIf="rowsObj && rowsObj.rows && rowsObj.rows?.length && (rowsObj.rows | currentRow: hour.label) as currentRows; else noSlotsSingle">
+        <ng-container *ngFor="let slot of currentRows.items; let idx=index; let last=last">
+          <div class="slot-container">
+
+            <div class="slot-col-titles" *ngIf="rowIdx === 0 && last">
+              <span>
+                {{ rowsObj.day }}
+              </span>
+            </div>
+
+            <div class="slot-col-titles" *ngIf="rowIdx === 0 && !last">
+              <span>&nbsp;</span>
+            </div>
+
+            <div
+            class="slot"
+            (click)="handleClick(idx, rowIdx, slot)"
+            [ngStyle]="slot.style ? slot.style : null">
+              <div class="slot__title">
+                {{slot.title}}
+              </div>
+
+              <div class="slot__subtitle">
+                {{slot.subtitle}}
+              </div>
+
+            </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="maxCols - currentRows.items.length">
+          <ng-container *ngFor="let item of (maxCols - currentRows.items.length | generateArray)">
+            <ng-container *ngTemplateOutlet="emptyCard"></ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+
+      <ng-template #noSlotsSingle let-items>
+        <div class="slots-list">
+          <ng-container *ngFor="let slot of (maxCols | generateArray)">
+            <ng-container *ngTemplateOutlet="emptyCard"></ng-container>
+          </ng-container>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Multi days slots -->
+<ng-template #slotsGridMulti>
+  <div class="slots-grid">
+    <div *ngFor="let hour of timeline; let rowIdx=index" class="slots-row">
+      <div class="hour-label">
+        {{ hour.label }}
+      </div>
+
+      <div class="slots-list" *ngIf="rowsArr && rowsArr.length">
+        <ng-container *ngFor="let slot of rowsArr; let idx=index">
+          <div class="slot-container"
+          *ngIf="(slot.rows | currentRow: hour.label) as currentRow; else noSlotsMulti"
+          (click)="handleClick(idx, rowIdx, slot)">
+
+            <div class="slot-col-titles" *ngIf="rowIdx === 0">
+              <span>
+                {{ slot.day | transformDate | date: 'EEE dd/MM/YYYY' }}
+              </span>
+            </div>
+
+            <div
+            class="slot"
+            [ngStyle]="currentRow.items[0].style ? currentRow.items[0].style : null">
+              <div class="slot__title">
+                {{currentRow.items[0].title}}
+              </div>
+
+              <div class="slot__subtitle">
+                {{currentRow.items[0].subtitle}}
+              </div>
+
+            </div>
+            <div
+            class="more-items"
+            *ngIf="currentRow.items.length - 1"
+            (click)="selectDay(idx, rowIdx, slot)">
+              + {{currentRow.items.length - 1}}
+            </div>
+          </div>
+          <ng-template #noSlotsMulti>
+            <div class="slot-container empty">
+              <div (click)="handleClick(idx, rowIdx)" class="slot">
+                <div class="slot__title">
+                  <!-- Empty title -->
+                </div>
+
+                <div class="slot__subtitle">
+                  <!-- Empty subtitle -->
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #emptyCard>
+  <div class="slot-container empty">
+    <div class="slot grey">
+      <div class="slot__title">
+        <!-- Empty title -->
+      </div>
+      <div class="slot__subtitle">
+        <!-- Empty subtitle -->
+      </div>
+    </div>
+  </div>
+</ng-template>
